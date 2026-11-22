@@ -1,0 +1,11 @@
+.env
+.env.*
+*.pem
+*.key
+cookies*.txt
+*.db
+*.db-*
+*.sqlite*
+*.log
+web/static/uploads/
+server-linux
