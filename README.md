@@ -2,6 +2,16 @@
 
 Aplikasi helpdesk berbasis Go dan SQLite untuk melaporkan kendala IT, melacak tiket dengan kode, serta mengelola penugasan dan laporan teknisi. Arsip distribusi berisi kode sumber dan aset web.
 
+## Tampilan aplikasi
+
+**Beranda pengguna** — buat tiket kendala IT atau cek perkembangan laporan.
+
+![Beranda AiniDesk dengan tombol buat tiket dan cek status](docs/beranda.webp)
+
+**Dashboard admin** — pantau ringkasan tiket dan buka daftar laporan. Gambar diambil dari instalasi demo dengan database kosong.
+
+![Dashboard admin AiniDesk pada instalasi demo](docs/dashboard.webp)
+
 ## Menjalankan aplikasi
 
 1. Ekstrak `it-ticket-support.zip`, buka terminal di folder yang berisi `go.mod`, lalu siapkan Go 1.26 atau lebih baru.
