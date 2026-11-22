@@ -1,18 +1,40 @@
-# AiniDesk · IT-TIKET
+# AiniDesk | Helpdesk IT Rumah Sakit
 
-Aplikasi helpdesk berbasis Go dan SQLite untuk melaporkan kendala IT, melacak tiket dengan kode, serta mengelola penugasan dan laporan teknisi. Arsip distribusi berisi kode sumber dan aset web.
+AiniDesk membantu staf rumah sakit melaporkan kendala IT dan mengikuti penanganannya lewat satu kode tiket. Misalnya, saat printer label di poli bermasalah, staf dapat membuat laporan, tim IT menugaskan teknisi, dan pelapor dapat mengecek perkembangan lewat halaman pelacakan.
+
+## Alur penanganan tiket
+
+| Pengguna | Yang dapat dilakukan |
+| --- | --- |
+| Staf rumah sakit | Membuat tiket, menyertakan lampiran, dan memeriksa status dengan kode tiket. |
+| Teknisi | Melihat tiket sesuai hak akses, mencatat tindak lanjut, dan memperbarui status penanganan. |
+| Administrator | Menugaskan teknisi, mengatur hak akses, memantau tiket lewat dashboard, dan mengunduh rekap Excel. |
 
 ## Tampilan aplikasi
 
-**Beranda pengguna** — buat tiket kendala IT atau cek perkembangan laporan.
+| Beranda pengguna | Dashboard admin |
+| --- | --- |
+| [![Beranda dengan pilihan buat tiket dan cek status](docs/beranda.webp)](docs/beranda.webp) | [![Dashboard admin dengan ringkasan status tiket](docs/dashboard.webp)](docs/dashboard.webp) |
 
-![Beranda AiniDesk dengan tombol buat tiket dan cek status](docs/beranda.webp)
+Klik gambar untuk memperbesar. Kedua tampilan berasal dari instalasi demo dengan database kosong.
 
-**Dashboard admin** — pantau ringkasan tiket dan buka daftar laporan. Gambar diambil dari instalasi demo dengan database kosong.
+## Keterampilan teknis yang ditunjukkan
 
-![Dashboard admin AiniDesk pada instalasi demo](docs/dashboard.webp)
+| Bidang | Penerapan dalam proyek |
+| --- | --- |
+| Pengembangan web dengan Go | Menangani formulir laporan, pencarian tiket, dan halaman admin dengan HTTP handler serta template HTML. |
+| Pemodelan data dengan SQLite | Menghubungkan tiket dengan pengguna, penugasan, dan riwayat pembaruan agar penanganan tiap laporan dapat ditelusuri. |
+| Autentikasi dan hak akses | Menyimpan kata sandi sebagai hash bcrypt, mengelola sesi login, dan memeriksa izin sebelum pengguna mengakses fungsi pengelolaan. |
+| Integrasi dan pelaporan | Mengirim notifikasi melalui bot Telegram ke penerima yang disetujui dan menghasilkan laporan Excel berdasarkan periode atau filter tiket. |
 
-## Menjalankan aplikasi
+Kode sumber dan aset aplikasi tersedia dalam [arsip proyek di GitHub](https://github.com/atnanbuyung00-prog/IT-TIKET/blob/main/it-ticket-support.zip). Di dalam arsip, titik masuk server berada di `cmd/server/main.go`, logika aplikasi di `internal/`, dan tampilan di `web/`.
+
+## Panduan teknis
+
+<details>
+<summary>Instalasi lokal, konfigurasi, ekspor laporan, dan Docker</summary>
+
+### Menjalankan aplikasi
 
 1. Ekstrak `it-ticket-support.zip`, buka terminal di folder yang berisi `go.mod`, lalu siapkan Go 1.26 atau lebih baru.
 2. Untuk database baru, jalankan perintah Bash berikut. Masukkan kata sandi unik sepanjang 12–72 byte saat diminta.
@@ -26,7 +48,7 @@ Aplikasi helpdesk berbasis Go dan SQLite untuk melaporkan kendala IT, melacak ti
 3. Buka `http://localhost:8080` untuk membuat tiket atau melacak laporan. Untuk mengelola tiket, masuk di `/admin/login` dengan nama pengguna `admin`. Tambahkan akun teknisi dari panel pengelolaan pengguna.
 4. Setelah admin terbentuk, hapus variabel awal dari konfigurasi layanan. Di Bash jalankan `unset INITIAL_ADMIN_PASSWORD` setelah proses pertama berhenti. Saat server dijalankan lagi, akun yang sudah ada tetap digunakan.
 
-## Konfigurasi
+### Konfigurasi
 
 | Variabel | Kegunaan |
 | --- | --- |
@@ -39,11 +61,11 @@ Aplikasi helpdesk berbasis Go dan SQLite untuk melaporkan kendala IT, melacak ti
 
 Lampiran runtime berada di `web/static/uploads/`. Simpan database dan lampiran pada penyimpanan persisten dengan cadangan privat. Tautan langsung lampiran dapat dibuka oleh pemegang URL. Batasi akses jaringan sesuai kebutuhan organisasi.
 
-## Ekspor laporan
+### Ekspor laporan
 
 Masuk dengan akun pengelola tiket, buka daftar tiket, lalu pilih **Unduh Excel (.xlsx)**. Pilih periode dan filter laporan yang diperlukan. File Excel berisi data dari instalasi yang sedang digunakan.
 
-## Memperbarui instalasi lama
+### Memperbarui instalasi lama
 
 Cadangkan data secara privat sebelum mengganti aplikasi. Cabut dan terbitkan ulang token bot lama melalui BotFather. Ganti kata sandi akun lama, periksa akun teknisi dan daftar penerima Telegram, serta cabut sesi aktif di server. Konfigurasi admin awal hanya berlaku saat tabel pengguna kosong.
 
@@ -53,3 +75,5 @@ Jalankan server dari folder proyek. Untuk Docker, bangun dahulu binary Linux amd
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server-linux ./cmd/server
 docker build --platform linux/amd64 -t it-tiket .
 ```
+
+</details>
